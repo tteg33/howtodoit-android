@@ -15,20 +15,28 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.howtodoit.Adapter.ToDoAdapter;
 
+/**
+ * Helper for determine whether delete or edit item based on user swipe action.
+ */
 public class EditDeleteHelper extends ItemTouchHelper.SimpleCallback {
 
     private final ToDoAdapter adapter;
 
     public EditDeleteHelper(ToDoAdapter adapter){
-        super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+        super(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT); // get user input left and right
         this.adapter = adapter;
     }
 
     @Override
     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-        return false;
+        return false; //Return true if the current ViewHolder can be dropped over the the target ViewHolder.
     }
 
+    /**
+     * Helper for determine user action
+     * @param viewHolder viewHolder
+     * @param direction direction
+     */
     @Override
     public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
         final int position = viewHolder.getAbsoluteAdapterPosition();
@@ -42,7 +50,8 @@ public class EditDeleteHelper extends ItemTouchHelper.SimpleCallback {
                     (dialog, which) -> adapter.notifyItemChanged(viewHolder.getAbsoluteAdapterPosition()));
             builder.setOnCancelListener((which) -> adapter.notifyItemChanged(viewHolder.getAbsoluteAdapterPosition()));
             AlertDialog dialog = builder.create();
-            dialog.show();
+
+            dialog.show(); //Set button text color
             Button buttonPositive = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
             buttonPositive.setTextColor(ContextCompat.getColor(adapter.getContext(), R.color.dracula_red));
             Button buttonNegative = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
@@ -54,6 +63,17 @@ public class EditDeleteHelper extends ItemTouchHelper.SimpleCallback {
 
             }
         }
+
+    /**
+     * Swipe animation and behaviour helper.
+     * @param c canvas
+     * @param recyclerView recyclerview
+     * @param viewHolder viewHolder
+     * @param dX x axis
+     * @param dY y axis
+     * @param actionState action state
+     * @param isCurrentlyActive check if is currently active
+     */
 
     @Override
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
@@ -73,26 +93,36 @@ public class EditDeleteHelper extends ItemTouchHelper.SimpleCallback {
             background = new ColorDrawable(ContextCompat.getColor(adapter.getContext(), R.color.dracula_red));
         }
 
+        //draw icon in the center
         assert icon != null;
         int iconMargin = (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
         int iconTop = itemView.getTop() + (itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
         int iconBottom = iconTop + icon.getIntrinsicHeight();
 
-        if (dX > 0) { // Swiping to the right
+
+        // User swipe to the right
+        if (dX > 0) {
             int iconLeft = itemView.getLeft() + iconMargin;
             int iconRight = itemView.getLeft() + iconMargin + icon.getIntrinsicWidth();
             icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
 
             background.setBounds(itemView.getLeft(), itemView.getTop(),
                     itemView.getLeft() + ((int) dX) + backgroundCornerOffset, itemView.getBottom());
-        } else if (dX < 0) { // Swiping to the left
+        }
+
+        //User swipe to the left
+        else if (dX < 0) {
             int iconLeft = itemView.getRight() - iconMargin - icon.getIntrinsicWidth();
             int iconRight = itemView.getRight() - iconMargin;
             icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
 
             background.setBounds(itemView.getRight() + ((int) dX) - backgroundCornerOffset,
                     itemView.getTop(), itemView.getRight(), itemView.getBottom());
-        } else { // view is unSwiped
+        }
+
+
+        // No action
+        else {
             background.setBounds(0, 0, 0, 0);
         }
 

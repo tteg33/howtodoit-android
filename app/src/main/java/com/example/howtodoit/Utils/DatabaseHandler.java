@@ -10,6 +10,10 @@ import com.example.howtodoit.Model.ToDoModel;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Basic implementation of SQLiteOpenHelper
+ */
 public class DatabaseHandler extends SQLiteOpenHelper{
 
     private static final int VERSION = 1;
@@ -29,11 +33,23 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         super(context, NAME, null, VERSION);
     }
 
+
+    /**
+     * Create database table.
+     * @param db empty database
+     */
     @Override
     public void onCreate(SQLiteDatabase db){
         db.execSQL(CREATE_TODO_TABLE);
     }
 
+
+    /**
+     * Update table.
+     * @param db og database
+     * @param oldVersion old version
+     * @param newVersion new version
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
         //Drop the older tables
@@ -42,10 +58,18 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         onCreate(db);
 
     }
+
+    /**
+     * Open a writable db.
+     */
     public void openDataBase(){
         db = this.getWritableDatabase();
     }
 
+
+    /** helper function for insert records into database.
+     * @param task record to be inserted
+     */
     public void insertTask(ToDoModel task){
         ContentValues cv = new ContentValues();
         cv.put(TASK, task.getTask());
@@ -55,6 +79,10 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         db.insert(TODO_TABLE, null, cv);
     }
 
+    /**
+     * Get all records from database.
+     * @return a todomodel list
+     */
     public List<ToDoModel> getAllTasks(){
         List<ToDoModel> taskList = new ArrayList<>();
         Cursor cur = null;
@@ -89,30 +117,55 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         return taskList;
     }
 
+
+    /**
+     * update task status
+     * @param id record id
+     * @param status task status
+     */
     public void updateStatus(int id, int status){
         ContentValues cv = new ContentValues();
         cv.put(STATUS, status);
         db.update(TODO_TABLE, cv, ID + "= ?", new String[] {String.valueOf(id)});
     }
 
+    /**
+     * update task contents
+     * @param id record id
+     * @param task task contents
+     */
     public void updateTask(int id, String task) {
         ContentValues cv = new ContentValues();
         cv.put(TASK, task);
         db.update(TODO_TABLE, cv, ID + "= ?", new String[] {String.valueOf(id)});
     }
 
+    /**
+     * update task star
+     * @param id record id
+     * @param star task star
+     */
     public void updateStar(int id, int star){
         ContentValues cv = new ContentValues();
         cv.put(STAR, star);
         db.update(TODO_TABLE, cv, ID + "= ?", new String[] {String.valueOf(id)});
     }
 
+    /**
+     * update task project
+     * @param id record id
+     * @param project task status
+     */
     public void updateProject(int id, String project){
         ContentValues cv = new ContentValues();
         cv.put(PROJECT, project);
         db.update(TODO_TABLE, cv, ID + "= ?", new String[] {String.valueOf(id)});
     }
 
+    /**
+     * delete task and its contents
+     * @param id record id
+     */
     public void deleteTask(int id){
         db.delete(TODO_TABLE, ID + "= ?", new String[] {String.valueOf(id)});
     }

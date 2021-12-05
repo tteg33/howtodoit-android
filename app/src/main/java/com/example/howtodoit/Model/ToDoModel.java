@@ -1,5 +1,8 @@
 package com.example.howtodoit.Model;
 
+/**
+ * Template for typical task object and its attributes' getter and setter functions.
+ */
 public class ToDoModel {
     private int id, status, star;
     private String task, project;
