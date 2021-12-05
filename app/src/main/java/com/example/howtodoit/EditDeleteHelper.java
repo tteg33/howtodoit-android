@@ -2,7 +2,6 @@ package com.example.howtodoit;
 
 import android.app.AlertDialog;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
