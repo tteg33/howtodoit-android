@@ -2,9 +2,11 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/design_default_color_background</item>
-        <item name="colorPrimaryDark">@color/cardview_dark_background</item>
-        <item name="colorAccent">@color/design_default_color_background</item>
+        <item name="colorPrimary">@color/dracula_background</item>
+        <item name="colorPrimaryDark">@color/dracula_background</item>
+        <item name="colorAccent">@color/dracula_foreground</item>
+        <item name="android:navigationBarColor">@color/dracula_background</item>
+
     </style>
 
     <style name="DialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
