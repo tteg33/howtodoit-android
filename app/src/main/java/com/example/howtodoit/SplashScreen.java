@@ -7,6 +7,8 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Objects;
+
 @SuppressLint("CustomSplashScreen")
 public class SplashScreen extends AppCompatActivity {
 
@@ -14,6 +16,7 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         final Intent i = new Intent (SplashScreen.this, MainActivity.class);
 
