@@ -1,10 +1,12 @@
 package com.example.howtodoit;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -38,8 +40,14 @@ public class EditDeleteHelper extends ItemTouchHelper.SimpleCallback {
                     (dialog, which) -> adapter.deleteTask(position));
             builder.setNegativeButton("Cancel",
                     (dialog, which) -> adapter.notifyItemChanged(viewHolder.getAbsoluteAdapterPosition()));
+            builder.setOnCancelListener((which) -> adapter.notifyItemChanged(viewHolder.getAbsoluteAdapterPosition()));
             AlertDialog dialog = builder.create();
             dialog.show();
+            Button buttonPositive = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+            buttonPositive.setTextColor(ContextCompat.getColor(adapter.getContext(), R.color.dracula_red));
+            Button buttonNegative = dialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+            buttonNegative.setTextColor(ContextCompat.getColor(adapter.getContext(), R.color.dracula_orange));
+
         }
             else{
                 adapter.editTask(position);
@@ -90,5 +98,7 @@ public class EditDeleteHelper extends ItemTouchHelper.SimpleCallback {
 
         background.draw(c);
         icon.draw(c);
+
+
     }
 }
