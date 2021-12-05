@@ -73,7 +73,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
             newProjectText.setText(project);
             starCheckBox.setChecked(star == 1);
             if(task.length()>0)
-                newTaskSaveButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.design_default_color_primary));
+                newTaskSaveButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.dracula_orange));
 
         }
         newTaskText.addTextChangedListener(new TextWatcher() {
@@ -86,11 +86,11 @@ public class AddNewTask extends BottomSheetDialogFragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s.toString().equals("")){
                     newTaskSaveButton.setEnabled(false);
-                    newTaskSaveButton.setTextColor(Color.GRAY);
+                    newTaskSaveButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.dracula_comment));
                 }
                 else{
                     newTaskSaveButton.setEnabled(true);
-                    newTaskSaveButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.design_default_color_primary));
+                    newTaskSaveButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.dracula_foreground));
 
                 }
 

@@ -60,10 +60,10 @@ public class EditDeleteHelper extends ItemTouchHelper.SimpleCallback {
 
         if (dX > 0) {
             icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.ic_baseline_edit_24);
-            background = new ColorDrawable(ContextCompat.getColor(adapter.getContext(), R.color.design_default_color_primary));
+            background = new ColorDrawable(ContextCompat.getColor(adapter.getContext(), R.color.dracula_comment));
         } else {
             icon = ContextCompat.getDrawable(adapter.getContext(), R.drawable.ic_baseline_delete_24);
-            background = new ColorDrawable(Color.RED);
+            background = new ColorDrawable(ContextCompat.getColor(adapter.getContext(), R.color.dracula_red));
         }
 
         assert icon != null;

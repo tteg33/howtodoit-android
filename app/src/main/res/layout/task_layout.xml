@@ -12,7 +12,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp">
+        android:padding="5dp"
+        android:background="@color/dracula_background">
+
 
         <TextView
             android:id="@+id/project_name"
@@ -20,7 +22,8 @@
             android:layout_height="wrap_content"
             tools:text="sample_project with avery very very very very long name so I can see the stupid behaviour"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"/>
+            android:layout_alignParentTop="true"
+            android:textColor="@color/dracula_comment"/>
 
         <CheckBox
             android:id="@+id/starCheckBox"
@@ -28,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:buttonTint="@android:color/holo_orange_dark" />
+            android:buttonTint="@color/dracula_orange" />
 
         <CheckBox
             android:id="@+id/todoCheckBox"
@@ -36,7 +39,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/project_name"
             android:layout_toStartOf="@id/starCheckBox"
-            android:buttonTint="@android:color/holo_blue_dark"
+            android:buttonTint="@color/dracula_cyan"
+            android:textColor="@color/dracula_foreground"
             tools:text="This is a demo of this layout. more charactes more chara" />
 
 

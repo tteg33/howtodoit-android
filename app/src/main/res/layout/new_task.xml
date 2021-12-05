@@ -2,7 +2,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="16dp">
+    android:background="@color/dracula_background"
+    android:padding="20dp">
 
     <EditText
         android:id="@+id/newTaskText"
@@ -11,6 +12,8 @@
         android:layout_margin="10dp"
         android:background="@null"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/dracula_foreground"
+        android:textColorHint="@color/dracula_comment"
         android:hint="@string/new_task" />
 
     <EditText
@@ -21,7 +24,9 @@
         android:layout_margin="10dp"
         android:background="@null"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:hint="@string/new_project" />
+        android:textColor="@color/dracula_foreground"
+        android:hint="@string/new_project"
+        android:textColorHint="@color/dracula_comment"/>
 
     <CheckBox
         android:id="@+id/newstarCheckBox"
@@ -30,8 +35,8 @@
         android:layout_below="@id/newProjectText"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         tools:text = "star"
-        android:buttonTint="@android:color/holo_orange_dark"
-        android:textColor="@android:color/darker_gray"/>
+        android:buttonTint="@color/dracula_orange"
+        android:textColor="@color/dracula_comment"/>
 
 
     <Button
@@ -43,7 +48,7 @@
         android:background="@android:color/transparent"
         android:text="@string/save"
         android:textAllCaps="false"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="@color/dracula_foreground"
         android:textSize="16sp" />
 
 </RelativeLayout>
