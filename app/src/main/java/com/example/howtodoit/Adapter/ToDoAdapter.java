@@ -1,11 +1,11 @@
 package com.example.howtodoit.Adapter;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,8 +23,8 @@ import java.util.List;
 public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
 
     private List<ToDoModel> todoList;
-    private MainActivity activity;
-    private DatabaseHandler db;
+    private final MainActivity activity;
+    private final DatabaseHandler db;
 
     public ToDoAdapter(DatabaseHandler db, MainActivity activity){
         this.activity = activity;
@@ -47,37 +47,26 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         holder.task.setChecked(toBoolean(item.getStatus()));
         holder.star.setChecked(toBoolean(item.getStar()));
         holder.project.setText(item.getProject());
-        holder.task.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    db.updateStatus(item.getId(), 1);
-                }
-                else{
-                    db.updateStatus(item.getId(), 0);
-                }
-
+        holder.task.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked){
+                db.updateStatus(item.getId(), 1);
             }
+            else{
+                db.updateStatus(item.getId(), 0);
+            }
+
         });
-        holder.star.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    db.updateStar(item.getId(),1 );
+        holder.star.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked){
+                db.updateStar(item.getId(),1 );
 
-                }
-                else{db.updateStar(item.getId(), 0);}
             }
+            else{db.updateStar(item.getId(), 0);}
         });
     }
 
     private boolean toBoolean(int n) {
         return n!=0;
-    }
-
-    public void setTodoList(List<ToDoModel> todoList){
-        this.todoList = todoList;
-        notifyDataSetChanged();
     }
 
     @Override
@@ -97,6 +86,21 @@ public class ToDoAdapter extends RecyclerView.Adapter<ToDoAdapter.ViewHolder> {
         fragment.setArguments(bundle);
         fragment.show(activity.getSupportFragmentManager(), AddNewTask.TAG);
 
+    }
+
+    public void deleteTask(int position){
+        ToDoModel item = todoList.get(position);
+        db.deleteTask(item.getId());
+        todoList.remove(item);
+        notifyItemRemoved(position);
+    }
+
+    public Context getContext() {
+        return activity;
+    }
+
+    public void setTodoList(List<ToDoModel> todoList) {
+        this.todoList = todoList;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{

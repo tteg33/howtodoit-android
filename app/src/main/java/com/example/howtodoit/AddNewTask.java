@@ -28,8 +28,6 @@ public class AddNewTask extends BottomSheetDialogFragment {
 
     public static final String TAG = "ActionBottomDialog";
 
-    private EditText newTaskText;
-    private EditText newProjectText;
     private CheckBox starCheckBox;
     private Button newTaskSaveButton;
     private DatabaseHandler db;
@@ -49,7 +47,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull
             LayoutInflater inflater,@Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.new_task, container, false);
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        Objects.requireNonNull(getDialog()).getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         return view;
     }
 
@@ -69,9 +67,13 @@ public class AddNewTask extends BottomSheetDialogFragment {
         if(bundle != null){
             isUpdate = true;
             String task = bundle.getString("task");
+            String project = bundle.getString("project");
+            int star = bundle.getInt("star");
             newTaskText.setText(task);
+            newProjectText.setText(project);
+            starCheckBox.setChecked(star == 1);
             if(task.length()>0)
-                newTaskSaveButton.setTextColor(ContextCompat.getColor(getContext(),R.color.design_default_color_primary));
+                newTaskSaveButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.design_default_color_primary));
 
         }
         newTaskText.addTextChangedListener(new TextWatcher() {
@@ -88,7 +90,7 @@ public class AddNewTask extends BottomSheetDialogFragment {
                 }
                 else{
                     newTaskSaveButton.setEnabled(true);
-                    newTaskSaveButton.setTextColor(ContextCompat.getColor(getContext(),R.color.design_default_color_primary));
+                    newTaskSaveButton.setTextColor(ContextCompat.getColor(requireContext(),R.color.design_default_color_primary));
 
                 }
 
@@ -102,46 +104,43 @@ public class AddNewTask extends BottomSheetDialogFragment {
 
         final boolean finalIsUpdate = isUpdate;
 
-        newTaskSaveButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                String text = newTaskText.getText().toString();
-                String project = newProjectText.getText().toString();
-                int star;
+        newTaskSaveButton.setOnClickListener(v -> {
+            String text = newTaskText.getText().toString();
+            String project = newProjectText.getText().toString();
+            int star;
+            if (starCheckBox.isChecked()){
+                star = 1;
+            }
+            else{
+                star = 0;
+            }
+            if(finalIsUpdate){
+                db.updateTask(bundle.getInt("id"), text);
+                db.updateProject(bundle.getInt("id"), project);
+                db.updateStar(bundle.getInt("id"), star);
+
+            }
+            else{
                 if (starCheckBox.isChecked()){
                     star = 1;
                 }
                 else{
                     star = 0;
-                };
-                if(finalIsUpdate){
-                    db.updateTask(bundle.getInt("id"), text);
-                    db.updateProject(bundle.getInt("id"), project);
-                    db.updateStar(bundle.getInt("id"), star);
-
                 }
-                else{
-                    if (starCheckBox.isChecked()){
-                        star = 1;
-                    }
-                    else{
-                        star = 0;
-                    };
-                    ToDoModel task = new ToDoModel();
-                    task.setTask(text);
-                    task.setStatus(0);
-                    task.setStar(star);
-                    task.setProject(project);
-                    db.insertTask(task);
-                }
-                dismiss();
+                ToDoModel task = new ToDoModel();
+                task.setTask(text);
+                task.setStatus(0);
+                task.setStar(star);
+                task.setProject(project);
+                db.insertTask(task);
             }
+            dismiss();
         });
 
     }
 
     @Override
-    public void onDismiss(DialogInterface dialog){
+    public void onDismiss(@NonNull DialogInterface dialog){
         Activity activity = getActivity();
         if(activity instanceof DialogCloseListener){
             ((DialogCloseListener)activity).handleDialogClose(dialog);
